@@ -90,7 +90,6 @@ class: inverse, center, middle
   plot(SP, xlab = "Quarter", ylab = "Rate S&P")
 ```
 ]
-
 .pull-right[
 .center[Beer Sales - Seasonality]
 ```{r out.width='100%', fig.height=3, eval=require('TSA'), echo=FALSE}
@@ -107,20 +106,45 @@ class: inverse, center, middle
 ]
 
 ---
-# Analysis
+# Analysis 
+### Why does it matter?
+
+- ## Identify patterns through decomposition
+- ## Gaps could be in distinct parts
+- ## Helps with selection of imputation method
+which python
+???
+- Irregular parts can be random
+  - but can also show autocorrelation or cycles of unpredictable duration
 
 ---
 
-# Trend
+# Trend,Seasonality
+.pull-left[
+.center[Air Passengers]
+```{r eval=require('TSA'), echo=FALSE}
+  library(ggplot2)
+  library(ggfortify)
+  data(list = 'airpass')
+  autoplot(airpass)
+```
+]
+.pull-right[
+.center[Loess Decomposition]
+```{r eval=require('TSA'), echo=FALSE}
+  data(list = 'airpass')
+  stlDecomp <- stl(airpass, s.window = 'periodic')
+  plot(stlDecomp, main = "Loess Seasonal Decomposition of Air Passenger Dataset")
+```
+]
+---
+# Trend, No Seasonality
 
 ---
-# Seasonality
+# No Trend, Seasonality
 
 ---
-# Trend + Seasonality
-
----
-# Random Walk(ish)
+# No Trend, No Seasonality
 
 ---
 class: inverse, center, middle
@@ -156,6 +180,9 @@ class: inverse, center, middle
 - Not MCAR and not MAR
 - Missing value dependend on the observation itself
 - example: Temperature sensor gives no values for temp > 100 degrees
+---
+# Simulate Missing Data
+
 ---
 # Performance Evaluation
 - ## Measuring imputation performance on real missing data not possible!
