@@ -78,13 +78,13 @@ class: inverse, center, middle
 # Samples
 .pull-left[
 .center[Airline Passengers - Trend + seasonality]
-```{r out.width='100%', fig.height=3, eval=require('TSA'), echo=FALSE}
+```{r out.width='100%', dpi=300, fig.height=3, eval=require('TSA'), echo=FALSE}
   data(list = 'airpass')
   par(cex.main = 1.8, cex.lab = 1.4)
   plot(airpass, xlab = "Month", ylab = "No. Air. Pass")
 ```
 .center[S&P Composite Index - Trend]
-```{r out.width='100%', fig.height=3, eval=require('TSA'), echo=FALSE}
+```{r out.width='100%', dpi=300, fig.height=3, eval=require('TSA'), echo=FALSE}
   data(list = 'SP')
   par(cex.main = 1.8, cex.lab = 1.4)
   plot(SP, xlab = "Quarter", ylab = "Rate S&P")
@@ -92,13 +92,13 @@ class: inverse, center, middle
 ]
 .pull-right[
 .center[Beer Sales - Seasonality]
-```{r out.width='100%', fig.height=3, eval=require('TSA'), echo=FALSE}
+```{r out.width='100%', dpi=300, fig.height=3, eval=require('TSA'), echo=FALSE}
   data(list = 'beersales')
   par(cex.main = 1.8, cex.lab = 1.4)
   plot(beersales, xlab = "Month", ylab = "Megabarrel")
 ```
 .center[Google Returns - Nearly white noise]
-```{r out.width='100%', fig.height=3, eval=require('TSA'), echo=FALSE}
+```{r out.width='100%',dpi=300, fig.height=3, eval=require('TSA'), echo=FALSE}
   data(list = 'google')
   par(cex.main = 1.8, cex.lab = 1.4)
   plot(google, xlab = "Day", ylab = "Returns")
@@ -111,40 +111,101 @@ class: inverse, center, middle
 
 - ## Identify patterns through decomposition
 - ## Gaps could be in distinct parts
-- ## Helps with selection of imputation method
-which python
+- ## Helps with selecting appropriate imputation method
+
+
 ???
 - Irregular parts can be random
   - but can also show autocorrelation or cycles of unpredictable duration
-
+  
 ---
-
-# Trend,Seasonality
+# Standard Tools
 .pull-left[
-.center[Air Passengers]
-```{r eval=require('TSA'), echo=FALSE}
-  library(ggplot2)
-  library(ggfortify)
-  data(list = 'airpass')
-  autoplot(airpass)
-```
+### Decomposition
+- #### Decompose a time series into level, trend, seasonality, and noise
+- #### Additive model (linear)
+  - #### $y(t) = t_{level} + t_{trend} + t_{seasonality} + t_{noise}$
+- #### Multiplicative model (non-linear)
+  - #### $y(t) = t_{level} * t_{trend} * t_{seasonality} * t_{noise}$
 ]
 .pull-right[
+### Autocorrelation (Serial Correlation)
+- #### Correlation time series and lagged version of itself
+- #### High correlation values [-1,1]
+  - #### Future may be predicted from the past
+  - #### Indicator for reliable imputations
+]
+
+---
+# Air Passenger - Trend, Seasonality
+.pull-left[
 .center[Loess Decomposition]
-```{r eval=require('TSA'), echo=FALSE}
+```{r eval=require('TSA'),dpi=300, echo=FALSE}
   data(list = 'airpass')
   stlDecomp <- stl(airpass, s.window = 'periodic')
   plot(stlDecomp, main = "Loess Seasonal Decomposition of Air Passenger Dataset")
 ```
 ]
+.pull-right[
+.center[Autocorrelation]
+```{r eval=require('TSA'),dpi=300, echo=FALSE}
+  data(list = 'airpass')
+  acf(airpass)
+```
+]
 ---
-# Trend, No Seasonality
+# S&P Composite Index - Trend, No Seasonality
+.pull-left[
+.center[Loess Decomposition]
+```{r eval=require('TSA'),dpi=300, echo=FALSE}
+  data(list = 'SP')
+  stlDecomp <- stl(SP, s.window = 'periodic')
+  plot(stlDecomp, main = "Loess Seasonal Decomposition of Air Passenger Dataset")
+```
+]
+.pull-right[
+.center[Autocorrelation]
+```{r eval=require('TSA'),dpi=300, echo=FALSE}
+  data(list = 'SP')
+  acf(SP)
+```
+]
 
 ---
-# No Trend, Seasonality
+# Beer Sales - No Trend, Seasonality
+.pull-left[
+.center[Loess Decomposition]
+```{r eval=require('TSA'),dpi=300, echo=FALSE}
+  data(list = 'beersales')
+  stlDecomp <- stl(beersales, s.window = 'periodic')
+  plot(stlDecomp, main = "Loess Seasonal Decomposition of Air Passenger Dataset")
+```
+]
+.pull-right[
+.center[Autocorrelation]
+```{r eval=require('TSA'),dpi=300, echo=FALSE}
+  data(list = 'beersales')
+  acf(beersales)
+```
+]
 
 ---
-# No Trend, No Seasonality
+# Google Daily Returns - No Trend, No Seasonality
+.pull-left[
+.center[Loess Decomposition]
+```{r eval=require('TSA'),dpi=300, echo=FALSE}
+  data(list = 'google')
+  #stlDecomp <- decompose(google)
+  #plot(stlDecomp, main = "Loess Seasonal Decomposition of Air Passenger Dataset")
+```
+]
+.pull-right[
+.center[Autocorrelation]
+```{r eval=require('TSA'),dpi=300, echo=FALSE}
+  data(list = 'google')
+  acf(google)
+```
+]
 
 ---
 class: inverse, center, middle

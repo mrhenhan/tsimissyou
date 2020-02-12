@@ -16,7 +16,7 @@
     <script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
     <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
     <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-    <script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
+    <script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
   </head>
   <body>
     <textarea id="source">
@@ -34,8 +34,8 @@ name: reachout
 # Find me ...
 .pull-left[
 ## today@bitExpert AG
-<div id="htmlwidget-1fb1a3f4cba7202454ea" style="width:100%;height:324px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-1fb1a3f4cba7202454ea">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[49.5124582,8.4672802,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"bitExpert AG",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[49.5124582,49.5124582],"lng":[8.4672802,8.4672802]},"setView":[[49.5124582,8.4672802],18,[]]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-d26b38628133dbc032a7" style="width:100%;height:324px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d26b38628133dbc032a7">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[49.5124582,8.4672802,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"bitExpert AG",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[49.5124582,49.5124582],"lng":[8.4672802,8.4672802]},"setView":[[49.5124582,8.4672802],18,[]]},"evals":[],"jsHooks":[]}</script>
 ]
 .pull-right[
   .right[
@@ -110,31 +110,73 @@ class: inverse, center, middle
 
 - ## Identify patterns through decomposition
 - ## Gaps could be in distinct parts
-- ## Helps with selection of imputation method
-which python
+- ## Helps with selecting appropriate imputation method
+
+
 ???
 - Irregular parts can be random
   - but can also show autocorrelation or cycles of unpredictable duration
+  
+---
+# Standard Tools
+.pull-left[
+### Decomposition
+- #### Decompose a time series into level, trend, seasonality, and noise
+- #### Additive model (linear)
+  - #### `\(y(t) = t_{level} + t_{trend} + t_{seasonality} + t_{noise}\)`
+- #### Multiplicative model (non-linear)
+  - #### `\(y(t) = t_{level} * t_{trend} * t_{seasonality} * t_{noise}\)`
+]
+.pull-right[
+### Autocorrelation (Serial Correlation)
+- #### Correlation time series and lagged version of itself
+- #### High correlation values [-1,1]
+  - #### Future may be predicted from the past
+  - #### Indicator for reliable imputations
+]
 
 ---
-
-# Trend,Seasonality
+# Air Passenger - Trend, Seasonality
 .pull-left[
-.center[Air Passengers]
+.center[Loess Decomposition]
 ![](T.S.-I-Miss-You---A-Tale-about-Gaps-in-Time-Series-Data_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
 ]
 .pull-right[
-.center[Loess Decomposition]
+.center[Autocorrelation]
 ![](T.S.-I-Miss-You---A-Tale-about-Gaps-in-Time-Series-Data_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
 ]
 ---
-# Trend, No Seasonality
+# S&amp;P Composite Index - Trend, No Seasonality
+.pull-left[
+.center[Loess Decomposition]
+![](T.S.-I-Miss-You---A-Tale-about-Gaps-in-Time-Series-Data_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+]
+.pull-right[
+.center[Autocorrelation]
+![](T.S.-I-Miss-You---A-Tale-about-Gaps-in-Time-Series-Data_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+]
 
 ---
-# No Trend, Seasonality
+# Beer Sales - No Trend, Seasonality
+.pull-left[
+.center[Loess Decomposition]
+![](T.S.-I-Miss-You---A-Tale-about-Gaps-in-Time-Series-Data_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+]
+.pull-right[
+.center[Autocorrelation]
+![](T.S.-I-Miss-You---A-Tale-about-Gaps-in-Time-Series-Data_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+]
 
 ---
-# No Trend, No Seasonality
+# Google Daily Returns - No Trend, No Seasonality
+.pull-left[
+.center[Loess Decomposition]
+
+]
+.pull-right[
+.center[Autocorrelation]
+![](T.S.-I-Miss-You---A-Tale-about-Gaps-in-Time-Series-Data_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+]
 
 ---
 class: inverse, center, middle
