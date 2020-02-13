@@ -4,7 +4,7 @@
     <title>T.S. I Miss You</title>
     <meta charset="utf-8" />
     <meta name="author" content="Henrik Hain" />
-    <meta name="date" content="2020-02-12" />
+    <meta name="date" content="2020-02-13" />
     <script src="libs/header-attrs-2.1/header-attrs.js"></script>
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
@@ -16,7 +16,7 @@
     <script src="libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
     <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
     <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-    <script src="libs/leaflet-binding-2.0.3/leaflet.js"></script>
+    <script src="libs/leaflet-binding-2.0.2/leaflet.js"></script>
   </head>
   <body>
     <textarea id="source">
@@ -26,7 +26,7 @@ class: center, middle, inverse, title-slide
 ## A Tale about Gaps in Time Series Data
 ### Henrik Hain
 ### <code>Data Scientist@All.In Data GmbH</code>
-### 2020-02-12
+### 2020-02-13
 
 ---
 
@@ -34,8 +34,8 @@ name: reachout
 # Find me ...
 .pull-left[
 ## today@bitExpert AG
-<div id="htmlwidget-d26b38628133dbc032a7" style="width:100%;height:324px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d26b38628133dbc032a7">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[49.5124582,8.4672802,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"bitExpert AG",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[49.5124582,49.5124582],"lng":[8.4672802,8.4672802]},"setView":[[49.5124582,8.4672802],18,[]]},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-926f8bc08c1afb060a77" style="width:100%;height:324px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-926f8bc08c1afb060a77">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addMarkers","args":[49.5124582,8.4672802,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"bitExpert AG",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[49.5124582,49.5124582],"lng":[8.4672802,8.4672802]},"setView":[[49.5124582,8.4672802],18,[]]},"evals":[],"jsHooks":[]}</script>
 ]
 .pull-right[
   .right[
@@ -88,9 +88,12 @@ class: inverse, center, middle
 - ## Special imputation case
 - ## No helping covariates
 - ## Only time dependencies
-- ## Most ready to use solutions address multivariate time series!
+- ## Existing solutions mostly address
+  - ### Multivariate time series
+  - ### Depend on correlations
+
 ---
-# Samples
+# Visualization
 .pull-left[
 .center[Airline Passengers - Trend + seasonality]
 &lt;img src="T.S.-I-Miss-You---A-Tale-about-Gaps-in-Time-Series-Data_files/figure-html/unnamed-chunk-2-1.png" width="100%" /&gt;
@@ -106,11 +109,10 @@ class: inverse, center, middle
 
 ---
 # Analysis 
-### Why does it matter?
 
-- ## Identify patterns through decomposition
-- ## Gaps could be in distinct parts
-- ## Helps with selecting appropriate imputation method
+- ## Identify time series pattern
+- ## Identify gap pattern
+- ## Selecting imputation method
 
 
 ???
@@ -118,17 +120,22 @@ class: inverse, center, middle
   - but can also show autocorrelation or cycles of unpredictable duration
   
 ---
-# Standard Tools
+# Standard Analysis Tools
 .pull-left[
+.center[
 ### Decomposition
+]
 - #### Decompose a time series into level, trend, seasonality, and noise
 - #### Additive model (linear)
   - #### `\(y(t) = t_{level} + t_{trend} + t_{seasonality} + t_{noise}\)`
 - #### Multiplicative model (non-linear)
   - #### `\(y(t) = t_{level} * t_{trend} * t_{seasonality} * t_{noise}\)`
+- #### Mixtures of both are possible
 ]
 .pull-right[
-### Autocorrelation (Serial Correlation)
+.center[
+### Autocorrelation
+]
 - #### Correlation time series and lagged version of itself
 - #### High correlation values [-1,1]
   - #### Future may be predicted from the past
@@ -171,7 +178,7 @@ class: inverse, center, middle
 # Google Daily Returns - No Trend, No Seasonality
 .pull-left[
 .center[Loess Decomposition]
-
+![](T.S.-I-Miss-You---A-Tale-about-Gaps-in-Time-Series-Data_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
 ]
 .pull-right[
 .center[Autocorrelation]
@@ -183,8 +190,30 @@ class: inverse, center, middle
 # Missing Values Analysis
 
 ---
-# Missing Completely at Random (MCAR)
-## `\(P(r|Y_{observed}, Y_{missing}) = P(r)\)`
+# Missing Values
+
+.pull-left[
+.center[
+### Mechanisms
+]
+- #### Missing completely at random (MCAR)
+  - #### `\(P(r|Y_{obs}, Y_{miss}) = P(r)\)`
+- #### Missing at random (MAR)
+  - #### `\(P(r|Y_{obs}, Y_{miss}) = P(r|Y_{obs})\)`
+- #### Missing not at random (MNAR)
+  - #### `\(P(r|Y_{obs}, Y_{miss}) = P(r|Y_{obs}, Y_{miss})\)`
+]
+.pull-right[
+.center[
+### Simulators
+]
+- #### e.g Exponential distributed 
+  - #### `\(f(x;\lambda) = \lambda e^{- \lambda x}\)`
+- #### e.g
+  - #### some formula
+- #### e.g.
+  - #### `\(y_t &gt; c\)`
+]
 
 
 ???
@@ -192,29 +221,22 @@ class: inverse, center, middle
 - Missing data is independent from values of other variables
 - Missing value also independent of the value of the observation itself
 - example: 24/7 Sensor data - Due to unknown reasons on random occasions data is missing
----
-# Missing at Random (MAR)
-
-## `\(P(r|Y_{observed}, Y_{missing}) = P(r|Y_{observed})\)`
-
-
-???
 - Probability of an observation missing is independent of observation itself (MCAR)
 - Is dependent on point of time (as there are no other variables)
 - example: Machine sensor data are more likely to be missing on weekends (because of shutdowns)
----
-# Missing Not at Random (MNAR)
-
-## `\(P(r|Y_{observed}, Y_{missing}) = P(r|Y_{observed}, Y_{missing})\)`
-
-
-???
 - Not MCAR and not MAR
 - Missing value dependend on the observation itself
 - example: Temperature sensor gives no values for temp &gt; 100 degrees
+
 ---
 # Simulate Missing Data
+.pull-left[
+- ### Evaluation on real missing data is not possible
+- ### Missing data has to be simulated
+]
+.pull-right[
 
+] 
 ---
 # Performance Evaluation
 - ## Measuring imputation performance on real missing data not possible!
@@ -240,6 +262,8 @@ class: inverse, center, middle
 class: inverse, center, middle
 
 # Classic Imputation Methods
+
+---
 
 ---
 class: inverse, center, middle

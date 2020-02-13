@@ -73,9 +73,12 @@ class: inverse, center, middle
 - ## Special imputation case
 - ## No helping covariates
 - ## Only time dependencies
-- ## Most ready to use solutions address multivariate time series!
+- ## Existing solutions mostly address
+  - ### Multivariate time series
+  - ### Depend on correlations
+
 ---
-# Samples
+# Visualization
 .pull-left[
 .center[Airline Passengers - Trend + seasonality]
 ```{r out.width='100%', dpi=300, fig.height=3, eval=require('TSA'), echo=FALSE}
@@ -107,11 +110,10 @@ class: inverse, center, middle
 
 ---
 # Analysis 
-### Why does it matter?
 
-- ## Identify patterns through decomposition
-- ## Gaps could be in distinct parts
-- ## Helps with selecting appropriate imputation method
+- ## Identify time series pattern
+- ## Identify gap pattern
+- ## Selecting imputation method
 
 
 ???
@@ -119,17 +121,22 @@ class: inverse, center, middle
   - but can also show autocorrelation or cycles of unpredictable duration
   
 ---
-# Standard Tools
+# Standard Analysis Tools
 .pull-left[
+.center[
 ### Decomposition
+]
 - #### Decompose a time series into level, trend, seasonality, and noise
 - #### Additive model (linear)
   - #### $y(t) = t_{level} + t_{trend} + t_{seasonality} + t_{noise}$
 - #### Multiplicative model (non-linear)
   - #### $y(t) = t_{level} * t_{trend} * t_{seasonality} * t_{noise}$
+- #### Mixtures of both are possible
 ]
 .pull-right[
-### Autocorrelation (Serial Correlation)
+.center[
+### Autocorrelation
+]
 - #### Correlation time series and lagged version of itself
 - #### High correlation values [-1,1]
   - #### Future may be predicted from the past
@@ -160,7 +167,7 @@ class: inverse, center, middle
 ```{r eval=require('TSA'),dpi=300, echo=FALSE}
   data(list = 'SP')
   stlDecomp <- stl(SP, s.window = 'periodic')
-  plot(stlDecomp, main = "Loess Seasonal Decomposition of Air Passenger Dataset")
+  plot(stlDecomp, main = "Loess Seasonal Decomposition of S&P composite index")
 ```
 ]
 .pull-right[
@@ -178,7 +185,7 @@ class: inverse, center, middle
 ```{r eval=require('TSA'),dpi=300, echo=FALSE}
   data(list = 'beersales')
   stlDecomp <- stl(beersales, s.window = 'periodic')
-  plot(stlDecomp, main = "Loess Seasonal Decomposition of Air Passenger Dataset")
+  plot(stlDecomp, main = "Loess Seasonal Decomposition of beer sales")
 ```
 ]
 .pull-right[
@@ -195,8 +202,8 @@ class: inverse, center, middle
 .center[Loess Decomposition]
 ```{r eval=require('TSA'),dpi=300, echo=FALSE}
   data(list = 'google')
-  #stlDecomp <- decompose(google)
-  #plot(stlDecomp, main = "Loess Seasonal Decomposition of Air Passenger Dataset")
+  stlDecomp <- stl(ts(google, frequency = 13), 'periodic')
+  plot(stlDecomp, main = "Loess Seasonal Decomposition of google returns")
 ```
 ]
 .pull-right[
@@ -212,8 +219,30 @@ class: inverse, center, middle
 # Missing Values Analysis
 
 ---
-# Missing Completely at Random (MCAR)
-## $P(r|Y_{observed}, Y_{missing}) = P(r)$
+# Missing Values
+
+.pull-left[
+.center[
+### Mechanisms
+]
+- #### Missing completely at random (MCAR)
+  - #### $P(r|Y_{obs}, Y_{miss}) = P(r)$
+- #### Missing at random (MAR)
+  - #### $P(r|Y_{obs}, Y_{miss}) = P(r|Y_{obs})$
+- #### Missing not at random (MNAR)
+  - #### $P(r|Y_{obs}, Y_{miss}) = P(r|Y_{obs}, Y_{miss})$
+]
+.pull-right[
+.center[
+### Simulators
+]
+- #### e.g Exponential distributed 
+  - #### $f(x;\lambda) = \lambda e^{- \lambda x}$
+- #### e.g
+  - #### some formula
+- #### e.g.
+  - #### $y_t > c$
+]
 
 
 ???
@@ -221,29 +250,22 @@ class: inverse, center, middle
 - Missing data is independent from values of other variables
 - Missing value also independent of the value of the observation itself
 - example: 24/7 Sensor data - Due to unknown reasons on random occasions data is missing
----
-# Missing at Random (MAR)
-
-## $P(r|Y_{observed}, Y_{missing}) = P(r|Y_{observed})$
-
-
-???
 - Probability of an observation missing is independent of observation itself (MCAR)
 - Is dependent on point of time (as there are no other variables)
 - example: Machine sensor data are more likely to be missing on weekends (because of shutdowns)
----
-# Missing Not at Random (MNAR)
-
-## $P(r|Y_{observed}, Y_{missing}) = P(r|Y_{observed}, Y_{missing})$
-
-
-???
 - Not MCAR and not MAR
 - Missing value dependend on the observation itself
 - example: Temperature sensor gives no values for temp > 100 degrees
+
 ---
 # Simulate Missing Data
+.pull-left[
+- ### Evaluation on real missing data is not possible
+- ### Missing data has to be simulated
+]
+.pull-right[
 
+] 
 ---
 # Performance Evaluation
 - ## Measuring imputation performance on real missing data not possible!
@@ -269,6 +291,8 @@ class: inverse, center, middle
 class: inverse, center, middle
 
 # Classic Imputation Methods
+
+---
 
 ---
 class: inverse, center, middle
